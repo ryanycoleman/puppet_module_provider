@@ -1,35 +1,18 @@
-require 'puppet/provider/package'
 require 'puppet/face'
 require 'uri'
 
-Puppet::Type.type(:package).provide :puppet_module, :parent => Puppet::Provider::Package do
-  desc "A Package provider for Puppet Modules"
-
-  has_feature :versionable
+Puppet::Type.type(:module).provide :forge do
+  desc "A Forge provider for Puppet Modules"
 
   @@module = Puppet::Face[:module, :current]
 
-  def self.installed
-    @@module.list.map do |module_path, modules|
-      modules.map do |mod|
-        {
-          :name => mod.forge_name,
-          :ensure => mod.version,
-          :modulepath => module_path,
-          :provider => :puppet_module,
-        }
-      end
-    end.flatten
-  end
-
-  def self.instances
-    installed.map { |x| new(x) }
-  end
-
-  def install
-    return self.update unless query.nil?
+  def create
+    return self.update unless exists?.nil?
     options = {}
     options[:version] = resource[:ensure] unless resource[:ensure].is_a? Symbol
+
+    # Allow modulepath to be set
+    options[:modulepath] = resource[:modulepath]
     
     if resource[:source] =~ /$https?:/
       options[:module_repository] = resource[:source]
@@ -49,11 +32,32 @@ Puppet::Type.type(:package).provide :puppet_module, :parent => Puppet::Provider:
     @@module.search(resource[:name])[:answers][0]['version']
   end
 
-  def query
+  def exists?
     self.class.installed.find { |x| x[:name] == resource[:name] }
   end
 
-  def uninstall
+  def self.installed
+    @@module.list.map do |module_path, modules|
+
+      modules.map do |mod|
+        #puts mod.inspect
+        {
+          :name => mod.forge_name,
+          :ensure => mod.version,
+          :modulepath => module_path,
+          :provider => :puppet_module,
+        }
+      end
+
+    end.flatten
+  end
+
+  def self.instances
+    installed.map { |x| new(x) }
+  end
+
+
+  def destroy
     begin
       output = @@module.uninstall(resource[:name])
       raise output[:error][:oneline] if output.key?(:error)
@@ -63,9 +67,12 @@ Puppet::Type.type(:package).provide :puppet_module, :parent => Puppet::Provider:
   end
 
   def update
-    return self.install if query.nil?
+    return self.install if exists?.nil?
     options = {}
     options[:version] = resource[:ensure] unless resource[:ensure].is_a? Symbol
+
+    # Allow modulepath to be set
+    options[:modulepath] = resource[:modulepath]
     
     if resource[:source] =~ /$https?:/
       options[:module_repository] = resource[:source]
