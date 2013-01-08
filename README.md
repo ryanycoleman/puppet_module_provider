@@ -1,14 +1,13 @@
-Puppet_Module Package Provider
+Puppet_Module Type and Provider
 =============
 
 
 Overview
 ---------
 
-This module provides a `puppet_module` provider for the package type in Puppet. It allows you to manage
-modules from the Puppet Forge as resources within Puppet's DSL.
+This module provides a module type and a forge provider for managing Puppet modules from the Forge as resources in the DSL.
 
-This provider is a prototype and should be used with caution in non-production deployments.
+This work is a prototype and should be used with caution in non-production deployments.
 
 The code behind version 0.0.1 is the work of [Pieter van de Bruggen](https://github.com/pvande). Thanks Pieter!
 
@@ -20,13 +19,14 @@ The simplest way to get started is to install this module with the Puppet Module
 
     puppet module install rcoleman/puppet_module
     
-Then, in your puppet manifests, simply specify the `provider` property in your `package` type with the value of `puppet_module`. The resource title should be the fully name-spaced module name from the Puppet Forge. ex. `author/module`
+Then, in your puppet manifests, build module resources to suit.
+The resource title should be the fully name-spaced module name from the Puppet Forge. ex. `author/module`
+By default, modules are installed into the first modulepath configured in puppet.conf (or default settings)
 
-Full example:
+Simple example:
 
-	package { 'author/mymodule':
+	module { 'author/mymodule':
 	  ensure   => present,
-	  provider => 'puppet_module',
 	}
 
 
@@ -35,18 +35,29 @@ More Examples
 
 Ensure a module is present from the Puppet Forge
     
-    package { 'puppetlabs/stdlib':
-      ensure   => installed,
-      provider => 'puppet_module',
-    }
+  module { 'puppetlabs/stdlib':
+    ensure   => installed,
+  }
 
 Ensure a module is absent
 
 
-    package { 'puppetlabs/stdlib':
-      ensure   => absent,
-      provider => 'puppet_module',
-    }
+  module { 'puppetlabs/stdlib':
+    ensure   => absent,
+  }
+
+Install a particular version of a module from the Puppet Forge
+
+  module { 'puppetlabs/stdlib':
+    ensure => '2.6.0',
+  }
+
+Install a module into a particular directory or 'module path'
+
+  module { 'puppetlabs/stdlib':
+    ensure     => present,
+    modulepath => '/etc/puppet/modules',
+  }
 
 
 Requirements
@@ -59,11 +70,22 @@ that this module uses for its work. The Puppet Module Face comes with Puppet ver
 Limitations
 -----------
 
-Many!
+### What works?
 
-Because resource type
+- Install a module
+- Uninstall a module
+- Upgrade a module to a specific version
+  - The above three with a user-supplied modulepath
 
-For example, this is merely a provider for the package type which sets its own properties. Therefore there's no way to specify the modulepath you want your module installed into, in this particular implementation.
+### What doesn't work?
+
+- Using a user-supplied modulepath for determining the existance of a module (exists? method)
+- Some operations involving specific module versions, especially when dealing with dependencies are wonky
+- Anything to do with environments (though the face is broken in this regard too)
+- No puppet resource inspection (self.instances)
+- Upgrade a module to 'latest'
+- Lots of other things that I haven't found yet
+
 
 Please Contribute!
 ------------------
@@ -72,5 +94,7 @@ This work is obviously a prototype and may behave completely differently by its 
 
 * RSpec Tests
 * Proper Pre-fetching
+* Bug Fixes
+* Features!
 
 If you're interested in any other contributions, please file an issue, create your work in a feature branch and submit a pull request against this repo. For more information, see the CONTRIBUTING.md
