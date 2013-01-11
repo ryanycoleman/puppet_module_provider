@@ -67,7 +67,7 @@ Puppet::Type.type(:module).provide :forge do
   end
 
   def update
-    return self.install if exists?.nil?
+    return self.create if exists?.nil?
     options = {}
     options[:version] = resource[:ensure] unless resource[:ensure].is_a? Symbol
 
