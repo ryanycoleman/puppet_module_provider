@@ -1,5 +1,5 @@
 name    'rcoleman-puppet_module'
-version '0.0.2'
+version '0.0.3'
 source  'git@github.com:rcoleman/puppet_module_provider.git'
 author  'pvande / Puppet Labs'
 license 'Apache License 2.0'

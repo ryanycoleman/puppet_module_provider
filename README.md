@@ -35,29 +35,29 @@ More Examples
 
 Ensure a module is present from the Puppet Forge
     
-  module { 'puppetlabs/stdlib':
-    ensure   => installed,
-  }
+    module { 'puppetlabs/stdlib':
+      ensure   => installed,
+    }
 
 Ensure a module is absent
 
 
-  module { 'puppetlabs/stdlib':
-    ensure   => absent,
-  }
+    module { 'puppetlabs/stdlib':
+      ensure   => absent,
+    }
 
 Install a particular version of a module from the Puppet Forge
 
-  module { 'puppetlabs/stdlib':
-    ensure => '2.6.0',
-  }
+    module { 'puppetlabs/stdlib':
+      ensure => '2.6.0',
+    }
 
 Install a module into a particular directory or 'module path'
 
-  module { 'puppetlabs/stdlib':
-    ensure     => present,
-    modulepath => '/etc/puppet/modules',
-  }
+    module { 'puppetlabs/stdlib':
+      ensure     => present,
+      modulepath => '/etc/puppet/modules',
+    }
 
 
 Requirements
