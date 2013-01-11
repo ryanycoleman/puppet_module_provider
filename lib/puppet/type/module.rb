@@ -2,14 +2,16 @@ Puppet::Type.newtype(:module) do
 
 	ensurable do
 
-	  attr_accessor :latest
-
 	  newvalue(:present, :event => :module_installed) do
 	    provider.create
 	  end
 
 	  newvalue(:absent, :event => :module_removed) do
 	    provider.destroy
+	  end
+
+	  newvalue(:latest ) do
+	  	provider.update
 	  end
 
     newvalue(/./) do
