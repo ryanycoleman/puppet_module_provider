@@ -4,7 +4,7 @@ require 'uri'
 Puppet::Type.type(:module).provide :forge do
   desc "A Forge provider for Puppet Modules"
 
-  @@module = Puppet::Face[:module, :current]
+  @@module = Puppet::Face[:module, '1.0.0']
 
   def create
     return self.update unless exists?.nil?
@@ -37,7 +37,7 @@ Puppet::Type.type(:module).provide :forge do
   end
 
   def self.installed
-    @@module.list.map do |module_path, modules|
+    @@module.list[:modules_by_path].map do |module_path, modules|
 
       modules.map do |mod|
         #puts mod.inspect
