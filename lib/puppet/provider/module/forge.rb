@@ -4,7 +4,7 @@ require 'uri'
 Puppet::Type.type(:module).provide :forge do
   desc "A Forge provider for Puppet Modules"
 
-  @@module = Puppet::Face[:module, '1.0.0']
+  @@module = Puppet::Face[:module, :current]
 
   def create
     return self.update unless exists?.nil?
