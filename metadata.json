@@ -1,0 +1,28 @@
+{
+  "name": "rcoleman-puppet_module",
+  "version": "0.1.1",
+  "author": "rcoleman",
+  "summary": "puppet_module type and provider for managing puppet modules as resources",
+  "license": "Apache 2.0",
+  "source": "git@github.com:ryanycoleman/puppet_module_provider.git",
+  "project_page": "https://github.com/ryanycoleman/puppet_module_provider",
+  "issues_url": "https://github.com/ryanycoleman/puppet_module_provider/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Darwin"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "dependencies": [
+
+  ]
+}

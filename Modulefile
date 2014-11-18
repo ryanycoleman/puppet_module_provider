@@ -1,8 +1,0 @@
-name    'rcoleman-puppet_module'
-version '0.0.3'
-source  'git@github.com:rcoleman/puppet_module_provider.git'
-author  'pvande / Puppet Labs'
-license 'Apache License 2.0'
-summary 'puppet_module type and provider for managing puppet modules as resources'
-description 'Manage Puppet Forge modules as Puppet resources with this module'
-project_page 'https://github.com/rcoleman/puppet_module_provider'
