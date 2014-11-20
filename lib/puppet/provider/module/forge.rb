@@ -37,7 +37,7 @@ Puppet::Type.type(:module).provide :forge do
   end
 
   def self.installed
-    @@module.list.map do |module_path, modules|
+    @@module.list[:modules_by_path].map do |module_path, modules|
 
       modules.map do |mod|
         #puts mod.inspect
